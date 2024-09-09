@@ -31,6 +31,7 @@ public class RefreshTokenService {
                     .expirationTime(Instant.now().plusMillis(refreshTokenValidity))
                     .user(user)
                     .build();
+            refreshTokenRepository.save(refreshToken);
         }
         return refreshToken;
 
@@ -38,7 +39,7 @@ public class RefreshTokenService {
 
     public RefreshToken verifyRefreshToken(String refreshToken){
         RefreshToken refToken = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(()-> new RuntimeException("Refresh token not found!####"));
+                .orElseThrow(()-> new RuntimeException("Refresh token not found!"));
 
         if(refToken.getExpirationTime().compareTo(Instant.now()) < 0){
             refreshTokenRepository.delete(refToken);
