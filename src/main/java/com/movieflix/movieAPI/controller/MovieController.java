@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movieflix.movieAPI.dto.MovieDto;
 import com.movieflix.movieAPI.dto.MoviePageResponse;
+import com.movieflix.movieAPI.exceptions.EmptyFileException;
 import com.movieflix.movieAPI.service.MovieService;
 import com.movieflix.movieAPI.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +29,7 @@ public class MovieController {
         this.movieService = movieService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add-movie")
     public ResponseEntity<MovieDto> addMovieHandler(@RequestPart MultipartFile file,
                                                     @RequestPart String movieDto) throws IOException, EmptyFileException {
