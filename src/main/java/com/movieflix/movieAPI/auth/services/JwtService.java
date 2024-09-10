@@ -1,5 +1,6 @@
 package com.movieflix.movieAPI.auth.services;
 
+import com.movieflix.movieAPI.exceptions.RefreshTokenExpiredException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -75,7 +76,16 @@ public class JwtService {
 
     // if token is expired
     private boolean isTokenExpired(String token){
-        return extractExpiration(token).before(new Date());
+
+        //try and catch add by me for practice
+        try {
+
+            return extractExpiration(token).before(new Date());
+
+        } catch (Exception e) {
+            throw new RefreshTokenExpiredException("Token Expired");
+        }
+
     }
 
     // get expiration date from token

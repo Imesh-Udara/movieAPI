@@ -4,6 +4,8 @@ import com.movieflix.movieAPI.auth.entities.RefreshToken;
 import com.movieflix.movieAPI.auth.entities.User;
 import com.movieflix.movieAPI.auth.repositories.RefreshTokenRepository;
 import com.movieflix.movieAPI.auth.repositories.UserRepository;
+import com.movieflix.movieAPI.exceptions.RefreshTokenExpiredException;
+import com.movieflix.movieAPI.exceptions.RefreshTokenNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +41,11 @@ public class RefreshTokenService {
 
     public RefreshToken verifyRefreshToken(String refreshToken){
         RefreshToken refToken = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(()-> new RuntimeException("Refresh token not found!"));
+                .orElseThrow(()-> new RefreshTokenNotFoundException("Refresh token not found!"));
 
         if(refToken.getExpirationTime().compareTo(Instant.now()) < 0){
             refreshTokenRepository.delete(refToken);
-            throw new RuntimeException("Refresh Token expired");
+            throw new RefreshTokenExpiredException("Refresh Token expired");
         }
 
         return refToken;

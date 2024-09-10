@@ -5,8 +5,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.io.FileNotFoundException;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MovieNotFoundException.class)
@@ -15,12 +13,23 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileExistsException.class)
-    public ProblemDetail handleFileExistsException(FileExistsException ex){
+    public ProblemDetail handleEmptyFileException(FileExistsException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(EmptyFileException.class)
-    public ProblemDetail handleFileExistsException(EmptyFileException ex){
+    public ProblemDetail handleEmptyFileException(EmptyFileException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    public ProblemDetail handleRefreshTokenNotFoundException(RefreshTokenNotFoundException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ProblemDetail handleRefreshTokenExpiredException(RefreshTokenExpiredException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.REQUEST_TIMEOUT, ex.getMessage());
+    }
+
 }
