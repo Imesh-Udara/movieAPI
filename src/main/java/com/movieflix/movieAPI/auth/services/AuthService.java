@@ -41,6 +41,9 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .username(savedUser.getUsername())
                 .build();
 
     }
@@ -60,6 +63,9 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
+                .name(user.getName())
+                .email(user.getEmail())
+                .username(user.getUsername())
                 .build();
     }
 }
